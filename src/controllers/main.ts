@@ -12,4 +12,8 @@ const ui = (req: Request, res: Response) => {
   res.render('main/ui');
 };
 
-export default { index, about, ui };
+const departamento = (req: Request, res: Response) => {
+  res.render('departamento/index');
+};
+
+export default { index, about, ui, departamento };
