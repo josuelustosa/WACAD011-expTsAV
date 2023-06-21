@@ -10,7 +10,9 @@ const index = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
   if (req.route.methods.get) {
-    res.render('departamento/create');
+    res.render('departamento/create', {
+      csrf: req.csrfToken,
+    });
   } else {
     const departamento = req.body;
     try {
@@ -21,6 +23,7 @@ const create = async (req: Request, res: Response) => {
       res.render('departamento/create', {
         departamento,
         errors: e.errors,
+        csrf: req.csrfToken,
       });
     }
   }
