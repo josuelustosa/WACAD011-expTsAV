@@ -31,7 +31,26 @@ const create = async (req: Request, res: Response) => {
 
 const read = async (req: Request, res: Response) => {};
 
-const update = async (req: Request, res: Response) => {};
+const update = async (req: Request, res: Response) => {
+  if (req.route.methods.get) {
+    res.render(`/departamento/update/${req.params.id}`, {
+      csrf: req.csrfToken,
+    });
+  } else {
+    const departamento = req.body;
+    try {
+      await Departamentos.create(departamento);
+      res.redirect('/departamento');
+    } catch (e: any) {
+      console.log(e);
+      res.render(`/departamento/update/${req.params.id}`, {
+        departamento,
+        errors: e.errors,
+        csrf: req.csrfToken,
+      });
+    }
+  }
+};
 
 const remove = async (req: Request, res: Response) => {};
 
