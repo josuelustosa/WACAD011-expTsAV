@@ -31,36 +31,34 @@ const create = async (req: Request, res: Response) => {
 
 const read = async (req: Request, res: Response) => {};
 
-const update = async (req: Request, res: Response) => {
-  if (req.route.methods.get) {
-    res.render('departamento/edit', {
+const edit = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  console.log('ID do departamento a ser editado:', id);
+
+  try {
+    const departamento = await Departamentos.findByPk(id);
+
+    if (!departamento) {
+      return res
+        .status(404)
+        .render('error', { message: 'Departamento não encontrado' });
+    }
+
+    res.render(`departamento/edit`, {
+      departamento,
       csrf: req.csrfToken(),
     });
-  } else {
-    const departamento = req.body;
-    const departamentoId = req.params.id;
-    try {
-      const updatedDepartamento = await Departamentos.findByPk(departamentoId);
-      if (!updatedDepartamento) {
-        return res
-          .status(404)
-          .render('error', { message: 'Departamento não encontrado' });
-      }
 
-      await updatedDepartamento.update(departamento);
-
-      res.redirect('/departamento');
-    } catch (error: any) {
-      console.log(error);
-      res.render(`departamento/edit`, {
-        departamento,
-        errors: error.errors,
-        csrf: req.csrfToken(),
-      });
-    }
+    console.log('Departamento encontrado:', departamento);
+  } catch (error: any) {
+    console.log(error);
+    res.render('error', {
+      message: 'Ocorreu um erro ao editar o departamento',
+    });
   }
 };
 
 const remove = async (req: Request, res: Response) => {};
 
-export default { index, read, create, update, remove };
+export default { index, read, create, edit, remove };

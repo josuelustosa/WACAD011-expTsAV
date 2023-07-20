@@ -21,14 +21,14 @@ router.get('/departamento/create', checkAuth, departamentoController.create);
 router.post('/departamento/create', checkAuth, departamentoController.create);
 router.get('/departamento/:id', checkAuth, departamentoController.read);
 router.get(
-  '/departamento/update/:id',
+  '/departamento/edit/:id',
   checkAuth,
-  departamentoController.update,
+  departamentoController.edit,
 );
 router.post(
-  '/departamento/update/:id',
+  '/departamento/edit/:id',
   checkAuth,
-  departamentoController.update,
+  departamentoController.edit,
 );
 router.post('/departamento/del/:id', checkAuth, departamentoController.remove);
 
