@@ -59,6 +59,28 @@ const edit = async (req: Request, res: Response) => {
   }
 };
 
-const remove = async (req: Request, res: Response) => {};
+const remove = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const departamento = await Departamentos.findByPk(id);
+
+    console.log('Departamento encontrado:', departamento);
+    if (!departamento) {
+      return res
+        .status(404)
+        .render('error', { message: 'Departamento não encontrado' });
+    }
+
+    await departamento.destroy();
+
+    res.redirect('/departamento');
+  } catch (error: any) {
+    console.log(error);
+    res.render('error', {
+      message: 'Ocorreu um erro ao excluir o departamento',
+    });
+  }
+};
 
 export default { index, read, create, edit, remove };
