@@ -26,13 +26,9 @@
               <a href='/departamento/{{id}}' class='btn btn-secondary'>
                 <i class='fa-solid fa-pen-to-square'></i>
               </a>
-              <form action='/departamento/del/{{id}}' method='post'>
-                <input type='hidden' name='_csrf' value='{{csrf}}' />
-                <input type='hidden' name='_method' value='delete' />
-                <button type='submit' class='btn btn-danger'>
-                  <i class='fa-solid fa-trash'></i>
-                </button>
-              </form>
+              <a href='/departamento/del/{{id}}' class='btn btn-danger'>
+                <i class='fa-solid fa-trash'></i>
+              </a>
             </td>
           </tr>
         {{/each}}
