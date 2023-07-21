@@ -19,17 +19,8 @@ router.get('/logout', mainController.logout);
 router.get('/departamento', checkAuth, departamentoController.index);
 router.get('/departamento/create', checkAuth, departamentoController.create);
 router.post('/departamento/create', checkAuth, departamentoController.create);
-router.get('/departamento/:id', checkAuth, departamentoController.read);
-router.get(
-  '/departamento/edit/:id',
-  checkAuth,
-  departamentoController.edit,
-);
-router.post(
-  '/departamento/edit/:id',
-  checkAuth,
-  departamentoController.edit,
-);
+router.get('/departamento/:id', departamentoController.read);
+router.post('/departamento/edit/:id', checkAuth, departamentoController.edit);
 router.post('/departamento/del/:id', checkAuth, departamentoController.remove);
 
 export default router;

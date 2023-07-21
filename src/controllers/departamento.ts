@@ -3,7 +3,7 @@ import { Departamentos } from '../models/Departamentos';
 
 const index = async (req: Request, res: Response) => {
   const departamentos = await Departamentos.findAll();
-  res.render('departamento/index', {
+  res.render('departamento', {
     departamentos: departamentos.map((dep) => dep.toJSON()),
   });
 };
@@ -29,28 +29,42 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-const read = async (req: Request, res: Response) => {};
+const read = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const departamento = await Departamentos.findByPk(id);
+
+  if (!departamento) {
+    return res
+      .status(404)
+      .render('error', { message: 'Departamento não encontrado' });
+  }
+
+  const dadosDepartamento = {
+    id: departamento.id,
+    name: departamento.name,
+    sigla: departamento.sigla,
+  };
+
+  res.render(`departamento/edit`, {
+    departamento: dadosDepartamento,
+    csrf: req.csrfToken(),
+  });
+};
 
 const edit = async (req: Request, res: Response) => {
   const { id } = req.params;
-
-  console.log('ID do departamento a ser editado:', id);
+  const { name, sigla } = req.body;
 
   try {
-    const departamento = await Departamentos.findByPk(id);
+    const dadosDepartamento = {
+      name,
+      sigla,
+    };
 
-    if (!departamento) {
-      return res
-        .status(404)
-        .render('error', { message: 'Departamento não encontrado' });
-    }
+    await Departamentos.update(dadosDepartamento, { where: { id } });
 
-    res.render(`departamento/edit`, {
-      departamento,
-      csrf: req.csrfToken(),
-    });
-
-    console.log('Departamento encontrado:', departamento);
+    res.redirect('/departamento');
   } catch (error: any) {
     console.log(error);
     res.render('error', {
@@ -64,8 +78,6 @@ const remove = async (req: Request, res: Response) => {
 
   try {
     const departamento = await Departamentos.findByPk(id);
-
-    console.log('Departamento encontrado:', departamento);
     if (!departamento) {
       return res
         .status(404)

@@ -19,6 +19,7 @@ import cookieParser from 'cookie-parser';
 import csurf from 'csurf';
 import session from 'express-session';
 import { v4 as uuidv4 } from 'uuid';
+import nocache from 'nocache';
 
 const models = [VersaoDB, Funcionarios, Departamentos, Projetos, Dependentes];
 
